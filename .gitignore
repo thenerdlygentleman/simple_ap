@@ -1,0 +1,7 @@
+*cache*
+target
+tmp/*
+.venv
+.python-version
+# .gitkeep
+tmp/.gitkeep
