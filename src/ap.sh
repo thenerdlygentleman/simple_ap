@@ -10,7 +10,7 @@ bg_magenta="\033[45m"
 bg_white="\033[47m"
 bold="\033[1m"
 # PATHS
-conf_directory=conf
+conf_directory="$(dirname '$0')/conf"
 
 headline() {
   echo "${blue}${bold}${bg_green}$1${ns}"
