@@ -27,7 +27,7 @@ error() {
 }
 
 
-headline "Please choose configuration"
+headline "possible configuration"
 echo "${green}"
 echo "[1]\tOpen"
 echo "[2]\tWPA"
@@ -35,7 +35,7 @@ echo "[3]\tHidden"
 echo "[3]\tSpace"
 echo "[3]\tSpecial"
 echo "${blue}"
-read -p "Please choose configuration: " ap
+read -p "please choose configuration: " ap
 echo "${ns}"
 
 
@@ -65,7 +65,10 @@ debug "Start dnsmasq"
 sudo dnsmasq -C dnsmasq.conf
 # START HOSTADP
 debug "Start hostapd"
-headline "HIT CRTL + C TO TERMINATE THE ACCESS POINT"
+headline "hit crtl + c to terminate the access point"
 sudo hostapd "$conf"
 # CLOSE THE SCRIPT
 debug "Stop Access point"
+debug "Start NetworkManager"
+sudo systemctl start NetworkManager
+headline "acces point closed"
