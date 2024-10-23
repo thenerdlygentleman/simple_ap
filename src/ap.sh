@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# COLORS
 ns="\033[0m"
 red="\033[31m"
 green="\033[32m"
@@ -8,7 +9,8 @@ bg_green="\033[42m"
 bg_magenta="\033[45m"
 bg_white="\033[47m"
 bold="\033[1m"
-
+# PATHS
+conf_directory=conf
 
 headline() {
   echo "${blue}${bold}${bg_green}$1${ns}"
@@ -25,42 +27,45 @@ error() {
 }
 
 
-
 headline "Please choose configuration"
 echo "${green}"
 echo "[1]\tOpen"
 echo "[2]\tWPA"
 echo "[3]\tHidden"
+echo "[3]\tSpace"
+echo "[3]\tSpecial"
 echo "${blue}"
 read -p "Please choose configuration: " ap
 echo "${ns}"
 
-conf_directory=conf
 
 case $ap in
-  1 ) conf="$conf_directory/rpi_open_ap.conf";;
-  2 ) conf="$conf_directory/rpi_wpa_ap.conf";;
-  3 ) conf="$conf_directory/rpi_hidden_ap.conf";;
+  1 ) conf="$conf_directory/open-ap.conf";;
+  2 ) conf="$conf_directory/wpa-ap.conf";;
+  3 ) conf="$conf_directory/hidden-ap.conf";;
+  4 ) conf="$conf_directory/space-ap.conf";;
+  5 ) conf="$conf_directory/special-ap.conf";;
   * ) echo "${red}Wrong Input${ns}"; exit 1;;
 esac
-
 debug "Using configuration file:\t${blue}${conf}${ns}"
 
+# STOP NETWORKMANAGER
 debug "Stop NetworkManager"
 sudo systemctl stop NetworkManager
-
+# FLUSH IP ADDRESS OF INTERFACE
 debug "Flush IP Address"
 sudo ip address flush wlan0
-
+# ADD THE NEW IP ADDRESS
 debug "Add IP Address"
 sudo ip address add 192.168.42.1/24 dev wlan0
 ip_address=$(ip a show wlan0 | grep inet | awk '{print $2}')
 debug "IP Address is:\t${blue}$ip_address"
-
+# START DNSMASQ SERVER
 debug "Start dnsmasq"
 sudo dnsmasq -C dnsmasq.conf
-
+# START HOSTADP
 debug "Start hostapd"
+headline "HIT CRTL + C TO TERMINATE THE ACCESS POINT"
 sudo hostapd "$conf"
-
+# CLOSE THE SCRIPT
 debug "Stop Access point"
