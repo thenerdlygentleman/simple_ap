@@ -1,5 +1,7 @@
 #!/bin/bash
 
+headline "welcome to simple_ap"
+
 # COLORS
 ns="\033[0m"
 red="\033[31m"
@@ -27,7 +29,6 @@ error() {
 }
 
 
-headline "possible configuration"
 echo "${green}"
 echo "[1]\tOpen"
 echo "[2]\tWPA"
@@ -59,16 +60,21 @@ sudo ip address flush wlan0
 debug "Add IP Address"
 sudo ip address add 192.168.42.1/24 dev wlan0
 ip_address=$(ip a show wlan0 | grep inet | awk '{print $2}')
-debug "IP Address is:\t${blue}$ip_address"
+debug "IP Address is:\t\t\t${blue}$ip_address"
 # START DNSMASQ SERVER
 debug "Start dnsmasq"
-sudo dnsmasq -C dnsmasq.conf
+sudo dnsmasq -C "$conf/dnsmasq.conf"
 # START HOSTADP
 debug "Start hostapd"
 headline "hit crtl + c to terminate the access point"
 sudo hostapd "$conf"
-# CLOSE THE SCRIPT
+# CTRL + C
 debug "Stop Access point"
+# FLUSH IP ADDRESS OF INTERFACE
+debug "Flush IP Address"
+sudo ip address flush wlan0
+# START NETWORKMANAGER
 debug "Start NetworkManager"
 sudo systemctl start NetworkManager
-headline "acces point closed"
+
+headline "thanks for using simple_ap"
