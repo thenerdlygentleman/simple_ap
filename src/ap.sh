@@ -1,6 +1,5 @@
 #!/bin/bash
 
-headline "welcome to simple_ap"
 
 # COLORS
 ns="\033[0m"
@@ -13,6 +12,7 @@ bg_white="\033[47m"
 bold="\033[1m"
 # PATHS
 conf_directory="$(dirname '$0')/conf"
+
 
 headline() {
   echo "${blue}${bold}${bg_green}$1${ns}"
@@ -29,6 +29,8 @@ error() {
 }
 
 
+headline "welcome to simple_ap"
+
 echo "${green}"
 echo "[1]\tOpen"
 echo "[2]\tWPA"
@@ -38,7 +40,6 @@ echo "[3]\tSpecial"
 echo "${blue}"
 read -p "please choose configuration: " ap
 echo "${ns}"
-
 
 case $ap in
   1 ) conf="$conf_directory/open-ap.conf";;
@@ -63,7 +64,7 @@ ip_address=$(ip a show wlan0 | grep inet | awk '{print $2}')
 debug "IP Address is:\t\t\t${blue}$ip_address"
 # START DNSMASQ SERVER
 debug "Start dnsmasq"
-sudo dnsmasq -C "$conf/dnsmasq.conf"
+sudo dnsmasq -C "$conf_directory/dnsmasq.conf"
 # START HOSTADP
 debug "Start hostapd"
 headline "hit crtl + c to terminate the access point"
