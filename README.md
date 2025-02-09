@@ -1,3 +1,9 @@
-# Template
+# Simple AP
 
-Template repository.
+Script to create a simple access point.
+
+## Usage
+
+```shell
+sh ap.sh
+```
